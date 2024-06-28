@@ -2,8 +2,8 @@ const Dice = require('./Dice');
 
 class Battle {
   constructor(player1, player2) {
-    this.player1 = player1;
-    this.player2 = player2;
+    this.playerA = player1;
+    this.playerB = player2;
     this.dice = new Dice();
   }
 
@@ -11,10 +11,10 @@ class Battle {
     const attackRoll = this.dice.roll();
     const defendRoll = this.dice.roll();
 
-    const attackDamage = attacker.attack * attackRoll;
-    const defendValue = defender.strength * defendRoll;
+    const DamageAttack = attacker.attack * attackRoll;
+    const defendVal = defender.strength * defendRoll;
 
-    const damage = attackDamage - defendValue;
+    const damage = DamageAttack - defendVal;
 
     if (damage > 0) {
       defender.health -= damage;
@@ -22,8 +22,8 @@ class Battle {
 
     console.log(`${attacker.name} attacks!`);
     console.log(`Attack Roll: ${attackRoll}, Defend Roll: ${defendRoll}`);
-    console.log(`${attacker.name} deals ${attackDamage} attack damage.`);
-    console.log(`${defender.name} defends with ${defendValue} defense value.`);
+    console.log(`${attacker.name} deals ${DamageAttack} attack damage.`);
+    console.log(`${defender.name} defends with ${defendVal} defense value.`);
     console.log(`${defender.name} takes ${damage > 0 ? damage : 0} damage.`);
     console.log(`${defender.name}'s health is now ${defender.health}.`);
     console.log('--------------------------------');
@@ -33,19 +33,19 @@ class Battle {
     console.log("The battle begins!");
     console.log('--------------------------------');
 
-    while (this.player1.isAlive() && this.player2.isAlive()) {
-      if (this.player1.health < this.player2.health) {
-        this.attack(this.player1, this.player2);
-        if (!this.player2.isAlive()) break;
-        this.attack(this.player2, this.player1);
+    while (this.playerA.isAlive() && this.playerB.isAlive()) {
+      if (this.playerA.health < this.playerB.health) {
+        this.attack(this.playerA, this.playerB);
+        if (!this.playerB.isAlive()) break;
+        this.attack(this.playerB, this.playerA);
       } else {
-        this.attack(this.player2, this.player1);
-        if (!this.player1.isAlive()) break;
-        this.attack(this.player1, this.player2);
+        this.attack(this.playerB, this.playerA);
+        if (!this.playerA.isAlive()) break;
+        this.attack(this.playerA, this.playerB);
       }
     }
 
-    const winner = this.player1.isAlive() ? this.player1.name : this.player2.name;
+    const winner = this.playerA.isAlive() ? this.playerA.name : this.playerB.name;
     console.log(`Game Over! The winner is ${winner}.`);
   }
 }
